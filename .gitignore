@@ -1,0 +1,22 @@
+# Build outputs
+bin/
+obj/
+out/
+publish/
+
+# Visual Studio / VS Code
+.vs/
+.vscode/
+
+# NuGet / dotnet
+*.nupkg
+packages/
+.nuget/
+artifacts/
+
+# Logs, DBs, temp
+*.log
+*.sqlite
+*.db
+TestResults/
+*.trx
