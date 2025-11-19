@@ -1,12 +1,12 @@
-# CartaoDeVacinaAPI
+# Vaccine CardAPI (CartaoDeVacinaAPI)
 
-API de exemplo para cartão de vacina.
+Example API for vaccine card.
 
-Pré-requisitos
+Prerequisites
 - .NET 10 SDK
 - SQLite
 
-Como rodar
+How to run
 ```powershell
 dotnet restore
 dotnet build

@@ -1,8 +1,12 @@
+using CartaoDeVacinaAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-public class AppDbContext : DbContext
+namespace CartaoDeVacinaAPI.data
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public class AppDbContext : DbContext
+    {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-    // public DbSet<SeuModelo> Modelos { get; set; }
+        public DbSet<Vaccine> VaccineCard {get; set;}
+    }
 }

@@ -1,3 +1,4 @@
+using CartaoDeVacinaAPI.data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
