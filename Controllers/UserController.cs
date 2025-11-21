@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CartaoDeVacinaAPI.data;
 using CartaoDeVacinaAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CartaoDeVacinaAPI.Controllers
 {
@@ -25,6 +26,14 @@ namespace CartaoDeVacinaAPI.Controllers
             await _appDbContext.SaveChangesAsync();
 
             return Ok(user);
+        }
+        
+        [HttpGet]
+
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        {
+            var users = await _appDbContext.Users.ToListAsync();
+            return Ok(users);
         }
     }
 }
