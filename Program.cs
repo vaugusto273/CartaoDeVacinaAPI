@@ -6,9 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Register EF Core SQLite
+// Use single DbContext registration (remova registros duplicados)
+var connectionString = builder.Configuration.GetConnectionString("AppDbConnectionString");
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(connectionString));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

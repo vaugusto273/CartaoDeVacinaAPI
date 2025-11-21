@@ -7,6 +7,7 @@ namespace CartaoDeVacinaAPI.data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<Vaccine> VaccineCard {get; set;}
+        public DbSet<Vaccine> Vaccines {get; set;}
+        public DbSet<User> Users {get; set;}
     }
 }
