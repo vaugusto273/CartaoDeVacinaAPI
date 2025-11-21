@@ -36,5 +36,18 @@ namespace CartaoDeVacinaAPI.Controllers
             var vaccines = await _appDbContext.Vaccines.ToListAsync();
             return Ok(vaccines);
         }
+
+        [HttpGet("{id:int}")]
+
+        public async Task<ActionResult<Vaccine>> GetVaccine(int id)
+        {
+            var vaccine = await _appDbContext.Vaccines.FindAsync(id);
+            if (vaccine == null)
+            {
+                return NotFound();
+            }
+            return Ok(vaccine);
+        }
     }
+
 }

@@ -35,5 +35,17 @@ namespace CartaoDeVacinaAPI.Controllers
             var users = await _appDbContext.Users.ToListAsync();
             return Ok(users);
         }
+
+        [HttpGet("{id:int}")]
+
+        public async Task<ActionResult<User>> GetUser(int id)
+        {
+            var user = await _appDbContext.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
     }
 }
