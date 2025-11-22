@@ -37,15 +37,22 @@ namespace CartaoDeVacinaAPI.Controllers
             return Ok(vaccines);
         }
 
-        [HttpGet("{id:int}")]
-
-        public async Task<ActionResult<Vaccine>> GetVaccine(int id)
+        [HttpGet("{value}")]
+        public async Task<ActionResult<Vaccine>> GetVaccine(string value)
         {
-            var vaccine = await _appDbContext.Vaccines.FindAsync(id);
-            if (vaccine == null)
+            bool isId = int.TryParse(value, out int id);
+            Vaccine? vaccine;
+            if (isId)
             {
-                return NotFound();
+                vaccine = await _appDbContext.Vaccines.FindAsync(id);
             }
+            else
+            {
+                vaccine = _appDbContext.Vaccines.FirstOrDefault(v => v.VaccineName.ToLower() == value.ToLower());
+            }
+
+            if (vaccine == null) return NotFound();
+
             return Ok(vaccine);
         }
     }
