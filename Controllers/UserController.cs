@@ -55,5 +55,18 @@ namespace CartaoDeVacinaAPI.Controllers
 
             return Ok(user);
         }
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateVaccine(int id, Vaccine updatedVaccine)
+        {
+            if (id != updatedVaccine.Id) return BadRequest("The URL ID is different from the ID sent in the body.");
+            
+            var existingVaccine = await _appDbContext.Vaccines.FindAsync(id);
+            
+            if (existingVaccine == null) return NotFound();
+
+            await _appDbContext.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }
