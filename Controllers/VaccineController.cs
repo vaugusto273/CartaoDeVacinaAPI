@@ -69,6 +69,19 @@ namespace CartaoDeVacinaAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteVaccine(int id)
+        {
+            var vaccine = await _appDbContext.Vaccines.FindAsync(id);
+
+            if (vaccine == null) return NotFound();
+
+            _appDbContext.Vaccines.Remove(vaccine);
+            await _appDbContext.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 
 }

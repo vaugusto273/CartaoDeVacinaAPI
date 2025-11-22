@@ -68,5 +68,18 @@ namespace CartaoDeVacinaAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _appDbContext.Users.FindAsync(id);
+
+            if (user == null) return NotFound();
+
+            _appDbContext.Users.Remove(user);
+            await _appDbContext.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }
