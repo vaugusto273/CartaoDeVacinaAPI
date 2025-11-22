@@ -56,13 +56,13 @@ namespace CartaoDeVacinaAPI.Controllers
             return Ok(user);
         }
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateVaccine(int id, Vaccine updatedVaccine)
+        public async Task<IActionResult> UpdateUser(int id, User updatedUser)
         {
-            if (id != updatedVaccine.Id) return BadRequest("The URL ID is different from the ID sent in the body.");
+            if (id != updatedUser.Id) return BadRequest("The URL ID is different from the ID sent in the body.");
             
-            var existingVaccine = await _appDbContext.Vaccines.FindAsync(id);
+            var existingUser = await _appDbContext.Users.FindAsync(id);
             
-            if (existingVaccine == null) return NotFound();
+            if (existingUser == null) return NotFound();
 
             await _appDbContext.SaveChangesAsync();
 
