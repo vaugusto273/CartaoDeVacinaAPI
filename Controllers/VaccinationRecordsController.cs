@@ -66,5 +66,35 @@ namespace CartaoDeVacinaAPI.Controllers
             
             return Ok(records);
         }
+
+        [HttpGet("{recordID:int}")]
+
+        public async Task<ActionResult<VaccinationRecord>> GetRecordByID(int userID, int recordID)
+        {
+            var userExists = await _appDbContext.Users.AnyAsync(u => u.Id == userID);
+            if (!userExists) return NotFound($"User with ID {userID} not found");
+
+            var record = await _appDbContext.VaccinationRecords
+                .Include(vr => vr.Vaccine)
+                .FirstOrDefaultAsync(vr => vr.Id == recordID && vr.UserID == userID);
+
+            if (record == null) return NotFound($"Record {recordID} not found for this user");
+        
+            return Ok(record);
+        }
+
+        [HttpDelete]
+
+        public async Task<IActionResult> DeleteRecord(int userID, int recordID)
+        {
+            var record = await _appDbContext.VaccinationRecords
+                .FirstOrDefaultAsync(vr => vr.Id == recordID && vr.UserID == userID);
+            if(record == null) return NotFound($"Record {recordID} not found for user {userID}.");
+
+            _appDbContext.VaccinationRecords.Remove(record);
+            await _appDbContext.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }
