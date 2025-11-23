@@ -32,7 +32,9 @@ namespace CartaoDeVacinaAPI.Controllers
 
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            var users = await _appDbContext.Users.ToListAsync();
+            var users = await _appDbContext.Users
+                .Include(u => u.VaccinationRecords)                
+                .ToListAsync();
             return Ok(users);
         }
 
@@ -44,11 +46,15 @@ namespace CartaoDeVacinaAPI.Controllers
             User? user;
             if (isId)
             {
-                user = await _appDbContext.Users.FindAsync(id);
+                user = await _appDbContext.Users
+                    .Include(u => u.VaccinationRecords)
+                    .FirstOrDefaultAsync(u => u.Id == id);
             }
             else
             {
-                user = _appDbContext.Users.FirstOrDefault(u => u.Name.ToLower() == value.ToLower());
+                user = await _appDbContext.Users
+                    .Include(u => u.VaccinationRecords)
+                    .FirstOrDefaultAsync(u => u.Name.ToLower() == value.ToLower());
             }
 
             if (user == null) return NotFound();
