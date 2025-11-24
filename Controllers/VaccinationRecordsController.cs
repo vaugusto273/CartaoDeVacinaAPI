@@ -30,7 +30,7 @@ namespace CartaoDeVacinaAPI.Controllers
             var vaccine = await _appDbContext.Vaccines.FindAsync(record.VaccineID);
             if (vaccine == null) return NotFound($"vaccine with ID {record.VaccineID} not found.");
 
-            if (record.DoseNumber < 1) return BadRequest("The DoseNumver cannot be less than 1");
+            if (record.DoseNumber < 1) return BadRequest("The Dose Number cannot be less than 1");
 
             record.UserID = userID;
 
@@ -45,7 +45,7 @@ namespace CartaoDeVacinaAPI.Controllers
             }
             catch (DbUpdateException)
             {
-                return BadRequest();
+                return BadRequest("There is already a record for this user with this vaccine and this dose number.");
             }
 
             return Ok(record);
@@ -83,7 +83,39 @@ namespace CartaoDeVacinaAPI.Controllers
             return Ok(record);
         }
 
-        [HttpDelete]
+        [HttpPut("{recordID:int}")]
+
+        public async Task<IActionResult> UpdateRecord(int userID, int recordID, VaccinationRecord updatedRecord)
+        {
+            var record = await _appDbContext.VaccinationRecords
+                .FirstOrDefaultAsync(vr => vr.Id == recordID && vr.UserID == userID);
+
+            if (record == null) return NotFound($"Record {recordID} not found for user {userID}.");
+
+            var vaccineExists = await _appDbContext.Vaccines
+                .AnyAsync(v => v.Id == updatedRecord.VaccineID);
+
+            if (!vaccineExists) return BadRequest($"Vaccine with ID {updatedRecord.VaccineID} doesn't exist.");
+
+            if (updatedRecord.DoseNumber < 1) return BadRequest("The Dose Number cannot be less than 1");
+
+            record.VaccineID = updatedRecord.VaccineID;
+            record.DoseNumber = updatedRecord.DoseNumber;
+            record.ApplicationDate = updatedRecord.ApplicationDate;
+            record.Notes = updatedRecord.Notes;
+
+            try
+            {
+                await _appDbContext.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest("There is already a record for this user with this vaccine and this dose number.");
+            }
+
+            return NoContent();
+        }
+        [HttpDelete("{recordID:int}")]
 
         public async Task<IActionResult> DeleteRecord(int userID, int recordID)
         {
