@@ -69,6 +69,8 @@ namespace CartaoDeVacinaAPI.Controllers
             if (existingUser == null) return NotFound();
 
             existingUser.Name = updatedUser.Name;
+            existingUser.Age = updatedUser.Age;
+            existingUser.Gender = updatedUser.Gender;
 
             await _appDbContext.SaveChangesAsync();
 
